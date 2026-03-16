@@ -1,0 +1,22 @@
+{
+  "name": "eam-rest-tools",
+  "version": "0.1.0",
+  "description": "EAM REST API utilities — grid request builder and response transformers",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./grid": "./src/grid/index.js",
+    "./transform": "./src/transform/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "keywords": [
+    "eam",
+    "infor",
+    "grid",
+    "rest"
+  ],
+  "license": "AGPL-3.0"
+}
