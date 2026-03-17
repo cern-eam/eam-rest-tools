@@ -4,10 +4,20 @@
   "description": "EAM REST API utilities — grid request builder and response transformers",
   "type": "module",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "exports": {
-    ".": "./src/index.js",
-    "./grid": "./src/grid/index.js",
-    "./transform": "./src/transform/index.js"
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./grid": {
+      "types": "./src/grid/index.d.ts",
+      "default": "./src/grid/index.js"
+    },
+    "./transform": {
+      "types": "./src/transform/index.d.ts",
+      "default": "./src/transform/index.js"
+    }
   },
   "files": [
     "src"
