@@ -1,1 +1,1 @@
-export { transformResponse, transformNativeResponse } from './grid.js';
+export { GridResponseData, transformResponse, transformNativeResponse } from './grid.js';
