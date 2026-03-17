@@ -26,19 +26,17 @@ import { GridDataType } from '../grid/constants.js';
  */
 export function transformResponse(response, keyMap, additionalData = []) {
   return {
-    body: {
-      data: [
-        ...response.body.data.map((item) =>
-          Object.fromEntries(
-            Object.entries(keyMap).map(([newKey, oldKey]) => [
-              newKey,
-              typeof oldKey === 'function' ? oldKey(item) : item[oldKey],
-            ])
-          )
-        ),
-        ...additionalData,
-      ],
-    },
+      body: {
+          metadata: response.body.metadata,
+          data: [
+              ...response.body.data.map(item => 
+                  Object.fromEntries(
+                    Object.entries(keyMap)
+                    .map(([newKey, oldKey]) => [newKey, typeof oldKey === 'function' ? oldKey(item) : item[oldKey]]))
+              ),
+              ...additionalData
+          ]
+      }
   };
 }
 
@@ -51,32 +49,36 @@ export function transformResponse(response, keyMap, additionalData = []) {
  * @returns {{ body: { data: Record<string, string | number | boolean | null>[] } }}
  */
 export const transformNativeResponse = (response) => {
-  const records = response.body.Result.ResultData.DATARECORD ?? [];
-
+  const gridResultData = response.body.Result.ResultData
+  
   return {
     body: {
-      data: records.map((record) => {
-        /** @type {Record<string, string | number | null | boolean>} */
+      metadata: {...gridResultData.METADATA,
+                DATAENTITYNAME: gridResultData.DATAENTITYNAME,
+                CURRENTCURSORPOSITION: gridResultData.CURRENTCURSORPOSITION,
+                NEXTCURSORPOSITION: gridResultData.NEXTCURSORPOSITION,
+      },
+      data: (gridResultData.DATARECORD ?? []).map(record => {
         const obj = {};
-
         for (const field of record.DATAFIELD) {
           let value = field.FIELDVALUE;
 
+          // Normalize types
           switch (field.DATATYPE) {
-            case GridDataType.DECIMAL:
-            case GridDataType.NUMBER:
-              value = value === '' ? null : Number(value?.replace(/,/g, ''));
+            case 'DECIMAL':
+            case 'NUMBER':
+              value = value === '' ? null : Number(value?.replace(/,/g, ""));
               break;
-            case GridDataType.CHKBOOLEAN:
+            case 'CHKBOOLEAN':
               value = value === '' ? null : ['1', '-1'].includes(value);
               break;
             default:
+              // Keep VARCHAR, MIXVARCHAR, DATE, etc. as-is
               break;
           }
 
           obj[field.FIELDNAME] = value;
         }
-
         return obj;
       }),
     },
