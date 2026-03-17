@@ -10,10 +10,11 @@ export default class GridRequest {
    * @param {string} [gridType]
    * @param {string} [userFunctionName]
    */
-  constructor(gridName, gridType = GridType.LIST, userFunctionName) {
+  constructor(gridName, gridType = GridType.LIST, userFunctionName, rowCount = 1000) {
     this.GRID = {
       GRID_NAME: gridName,
-      NUMBER_OF_ROWS_FIRST_RETURNED: 1000,
+      NUMBER_OF_ROWS_FIRST_RETURNED: rowCount,
+      WSGRIDSZ_OVERRIDE: rowCount,
       CURSOR_POSITION: 0,
     };
 
@@ -27,6 +28,8 @@ export default class GridRequest {
 
     this.REQUEST_TYPE = 'LIST.HEAD_DATA.STORED';
     this.LOCALIZE_RESULT = 'false';
+
+    return this;
   }
 
   /**
