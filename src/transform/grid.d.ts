@@ -1,6 +1,7 @@
 export interface GridResponseData {
   body: {
-    data: Record<string, string>[];
+    data: any;
+    metadata: any;
   };
 }
 
