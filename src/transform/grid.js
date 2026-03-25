@@ -5,7 +5,7 @@ import { GridDataType } from '../grid/constants.js';
  */
 
 /**
- * @typedef {{ body: { Result: { ResultData: { DATARECORD: Array<{ DATAFIELD: Array<{ FIELDVALUE: string, DATATYPE: string, FIELDNAME: string }> }> } } } }} GridDataNativeResponse
+ * @typedef {{ Result: { ResultData: { DATARECORD: Array<{ DATAFIELD: Array<{ FIELDVALUE: string, DATATYPE: string, FIELDNAME: string }> }> } } }} GridDataNativeResponse
  */
 
 /**
@@ -49,7 +49,7 @@ export function transformResponse(response, keyMap, additionalData = []) {
  * @returns {{ body: { data: Record<string, string | number | boolean | null>[] } }}
  */
 export const transformNativeResponse = (response) => {
-  const gridResultData = response.body.Result.ResultData
+  const gridResultData = response.Result.ResultData
   
   return {
     body: {
